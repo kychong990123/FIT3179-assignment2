@@ -1,0 +1,52 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+      "url": "https://raw.githubusercontent.com/kychong990123/FIT3179-assignment2/main/indian_food.csv"
+    },
+    "vconcat":[
+      { 
+        "width": 500,
+        "height":200,
+        "mark": "boxplot",
+        "transform": [{"filter": "datum.prep_time > -1"}],
+        "encoding": {
+          "y": {
+            "field": "course", 
+            "type": "nominal"
+          },
+          "color": {
+            "field": "course", 
+            "type": "nominal", 
+            "legend": null},
+          "x": {
+            "field": "prep_time",
+            "type": "quantitative",
+            "scale": {"zero": false}
+          }
+        }
+      },
+      { 
+        "width": 500,
+        "height":200,
+        "mark": "boxplot",
+        "transform": [{"filter": "datum.prep_time > -1"}],
+        "encoding": {
+          "y": {
+            "field": "course", 
+            "type": "nominal"
+          },
+          "color": {
+            "field": "course", 
+            "type": "nominal", 
+            "legend": null},
+          "x": {
+            "field": "cook_time",
+            "type": "quantitative",
+            "scale": {"zero": false}
+          }
+        }
+      }
+    ]
+    
+  }
+  

@@ -1,0 +1,70 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 1000,
+    "height": 300,
+    "params": [
+      {
+        "name": "flavor",
+        "value": "spicy",
+        "bind": {
+          "input":"select",
+          "options": ["bitter","sour","sweet","spicy"],
+          "labels": ["Bitter","Sour","Sweet","Spicy"],
+          "name": "Flavor: "
+        }
+      }
+    ],
+    "title": "Indian Food Flavor Distribution",
+    "projection": {"type": "equirectangular"},
+    "data": {
+         "url": "https://raw.githubusercontent.com/kychong990123/FIT3179-assignment2/main/indian_food.csv"
+  
+    },
+    "transform": [
+      {
+      "lookup": "state",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/india/india-states.json",
+              "format": {"type": "topojson", "feature": "IND_adm1"}
+          },
+          "key": "properties.NAME_1"
+      },
+      "as": "geo"
+      },
+      {
+        "filter":"datum.flavor_profile == flavor"
+      },
+      {
+          "joinaggregate": [{
+          "op": "count",
+          "as": "dishes count"
+      }],
+      "groupby": [
+          "state"
+        ]
+      }
+  
+    ],
+  
+    "mark": {
+      "type": "geoshape"
+      },
+    "encoding": {
+          "tooltip": [
+            {"field": "dishes count"},
+            {"field": "state"}
+          ],
+          "shape": {
+            "field": "geo",
+            "type": "geojson"
+          },
+          "color": {
+            "field": "dishes count",
+            "type": "quantitative"
+          }
+  
+    }
+          
+  }
+  

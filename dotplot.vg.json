@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title":"Mean of Preparation and Cooking Time for each State",
+  "height":200,
+  "width":1000,
+  "data": {"url": "https://raw.githubusercontent.com/kychong990123/FIT3179-assignment2/main/indian_food.csv"},
+  "transform": [
+    {
+      "filter":"datum.state != -1"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "mean",
+          "field": "prep_time",
+          "as": "prep"
+        },
+        {
+          "op": "mean",
+          "field": "cook_time",
+          "as": "cook"
+        },
+        {
+          "op":"count",
+          "as": "count"
+        }
+      ],
+      "groupby": ["state"]
+    }
+],
+  "mark": {
+  "type": "circle"
+},
+  "encoding": {
+    "x": {"field": "prep", "type": "quantitative", "title":"Preparation Time"},
+    "y": {"field": "cook", "type": "quantitative","title":"Cooking Time"},
+    "color": {"field": "state", "type": "nominal"},
+    "size": {
+      "field": "count",
+      "type": "quantitative",
+      "title": "Number of dishes in State",
+      "legend": {"clipHeight": 30},
+      "scale": {"rangeMax": 500}
+      
+    },
+    "tooltip":[
+      {"field": "state", "type": "nominal"},
+      {"field": "prep", "type": "quantitative"},
+      {"field": "cook", "type": "quantitative"}
+      ] 
+  }
+}

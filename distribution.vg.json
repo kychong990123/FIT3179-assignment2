@@ -1,0 +1,56 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Distribution of Time Used to Prepare and Cook Dishes in Regions in India",
+ 
+  "hconcat":[
+    {
+      "width": 500,
+      "height": 200,
+      "data": {
+        "url": "https://raw.githubusercontent.com/kychong990123/FIT3179-assignment2/main/indian_food.csv"
+      },
+      "mark": "area",
+      "transform": [
+        {
+          "filter":"datum.region == 'East' || datum.region == 'West'|| datum.region == 'North'|| datum.region == 'South' || datum.region == 'North East'"
+        },
+        {
+          "density": "prep_time",
+          "groupby": ["region"],
+          "extent": [0,600]
+        }
+      ],
+      "encoding": {
+        "x": {"field": "value", "type": "quantitative", "title": "Total Time used to prepare a meal"},
+        "y": {"field": "density", "type": "quantitative", "stack": "zero"},
+        "color": {"field": "region", "type": "nominal"}
+      }
+  },
+  {
+    "width": 500,
+    "height": 200,
+    "data": {
+        "url": "https://raw.githubusercontent.com/kychong990123/FIT3179-assignment2/main/indian_food.csv"
+      },
+      "mark": "area",
+      "transform": [
+        {
+          "filter":"datum.region == 'East' || datum.region == 'West'|| datum.region == 'North'|| datum.region == 'South' || datum.region == 'North East'"
+        },
+        {
+          "density": "cook_time",
+          "groupby": ["region"],
+          "extent": [0,200]
+        }
+      ],
+      "encoding": {
+        "x": {"field": "value", "type": "quantitative", "title": "Total Time used to cook a meal"},
+        "y": {"field": "density", "type": "quantitative", "stack": "zero"},
+        "color": {"field": "region", "type": "nominal"}
+      }
+  }
+]
+  
+      
+
+}
