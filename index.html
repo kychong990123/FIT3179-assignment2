@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
-    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
-  
-    <!-- Import pure.css -->
-    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+</head>
 <style>
 body {font-family: "Times New Roman", Georgia, Serif;}
 h1, h2, h3, h4, h5, h6 {
@@ -20,14 +15,15 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 5px;
 }
 </style>
-<body>
+<body style="background-color:#F8F6F0 ;">
 
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
   <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
-    <a href="#home" class="w3-bar-item w3-button">Indian Food Statistics</a>
     <!-- Right-sided navbar links. Hide them on small screens -->
-    
+    <div class="w3-left w3-hide-small">
+      <a class="w3-bar-item w3-button">Indian Food Statistics</a>
+    </div>
   </div>
 </div>
 
@@ -35,51 +31,44 @@ h1, h2, h3, h4, h5, h6 {
 <div class="w3-content" style="max-width:1100px">
 
   <!-- About Section -->
-  <div class="w3-row w3-padding-64" id="about">
-    <div class="w3-col m6 w3-padding-large w3-hide-small">
-     <img src="/indian-food@2x.jpg" class="w3-round w3-image w3-opacity-min" alt="Table Setting" width="600" height="750">
-    </div>
-
-    <div class="w3-col m6 w3-padding-large">
-      <div class="page">
-        <!-- pure grid group -->
-        <div id="vis2" class="vis-container"></div>
-        <!-- end pure grid group --> 
-      </div>
-    </div>
-   
-  </div>
-  
-  <div class="w3-row m12 w3-padding-large">
-    <div class="page">
-      <!-- pure grid group -->
-      <div id="vis1" class="vis-container"></div>
-    </div>
-  </div>
-
-  <div class="w3-row m12 w3-padding-large">
-    <div class="page">
-      <!-- pure grid group -->
-      <div id="vis3" class="vis-container"></div>
-    </div>
-  </div>
-
-
-  <div class="w3-row m12 w3-padding-large">
-    <div class="page">
-      <!-- pure grid group -->
+  <div class="w3-row w3-padding-64" >
+      <div id="vis2" ></div>
+      <p class="w3-center" style="font-family: Arial, Helvetica, sans-serif;">
+      Both <b>South</b> and <b>West</b> regions of India have 3 dishes that are <span style="color:#D90368;">non vegetarian </span>.<br/>
+      Both <b>East</b> and <b>North</b> regions of India also have the same number of <span style="color:#D90368;">non vegetarian </span> dishes which is 5.<br/>
+      <b>Central</b> does not have any <span style="color:#D90368;">non vegetarian</span> dishes at all. 
+      </p>
+      <br/>
+      <br/>
+      <div id="vis1" ></div>
+      <br/>
+      <br/>
+      <p class="w3-center" style="font-family: Arial, Helvetica, sans-serif;">
+        <b>Sour</b> and <b>bitter</b> dishes are not popular in India, there are only a total of 4 <b>sour</b> dishes and 1 <b>bitter</b> dish in the whole country according to the given dataset. 
+        <br/>Punjab has the most <b>spicy</b> dishes. <br/>West Bengal has the most <b>sweet</b> dishes. <br/>Gujarat is the state with a <b>sour</b> dish.
+        <br /> Gujarat and Punjab are the only states with <b>bitter</b> dishes. Each has two <b>bitter</b> dishes respectively.
+      </p>
+      <br/>
+      <br/>
+      <div id="vis3" ></div>
+      <br /><br /><br /><br />
+      <div id="vis5" ></div>
       
-        <div id="vis5" class="vis-container"></div>
- 
     </div>
-  </div>
+
+    
 <!-- End page content -->
 </div>
+
+<!-- Footer -->
+<footer class="w3-center w3-light-grey w3-padding-32">
+  <p>Visualization created by Chong Kah Ying</p>
+  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
+</footer>
 <script type="text/javascript">
   var specVis1 = "./map.vg.json";
-
   vegaEmbed('#vis1', specVis1, {"actions": false});
-  var specVis2 = "./iso.vg.json";
+  var specVis2 = "./bar.vg.json";
   vegaEmbed('#vis2', specVis2, {"actions":false});
   var specVis3 = "./distribution.vg.json";
   vegaEmbed('#vis3', specVis3, {"actions":false});
@@ -88,10 +77,5 @@ h1, h2, h3, h4, h5, h6 {
   var specVis5 = "./dotplot.vg.json";
   vegaEmbed('#vis5', specVis5, {"actions":false});
 </script>
-<!-- Footer -->
-<footer class="w3-center w3-light-grey w3-padding-32">
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
-</footer>
-
 </body>
 </html>

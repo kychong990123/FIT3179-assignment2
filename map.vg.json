@@ -1,70 +1,168 @@
 {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "width": 1000,
-    "height": 300,
-    "params": [
-      {
-        "name": "flavor",
-        "value": "spicy",
-        "bind": {
-          "input":"select",
-          "options": ["bitter","sour","sweet","spicy"],
-          "labels": ["Bitter","Sour","Sweet","Spicy"],
-          "name": "Flavor: "
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 1040,
+  "height": 600,
+  "params": [
+    {
+      "name": "flavor",
+      "value": "spicy",
+      "bind": {
+        "input":"select",
+        "options": ["bitter","sour","sweet","spicy"],
+        "labels": ["Bitter","Sour","Sweet","Spicy"],
+        "name": "Flavor: "
+      }
+    }
+  ],
+  "title":{
+    "text":  "Flavor Distribution in Indian Food - Spicy, Sweet, Sour, Bitter",
+    "fontSize":22,
+    "dy":-20 ,
+    "font":"Verdana",
+    "align": "center"
+
+  },
+  "projection": {"type": "equirectangular"},
+  "data": {
+       "url": "https://raw.githubusercontent.com/kychong990123/FIT3179-assignment2/main/indian_food.csv"
+
+  },
+  "transform": [
+    {
+      "joinaggregate": [
+        {
+          "op": "count",
+          "as": "total"
+        }
+      ],"groupby": ["region"]
+    }
+  ],
+  "layer":[
+
+    {
+       "transform": [
+          {
+          "lookup": "state",
+              "from": {
+                "data": {
+                  "url": "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/india/india-states.json",
+                  "format": {"type": "topojson", "feature": "IND_adm1"}
+              },
+              "key": "properties.NAME_1"
+              },
+              "as": "geo"
+          },
+          {
+            "filter":"datum.flavor_profile == flavor && datum.lat != '' && datum.long != '' " 
+          },
+          {
+              "joinaggregate": [{
+                "op": "count",
+                "as": "dishes"
+              }],
+              "groupby": [
+                "state"
+              ]
+          },
+          {
+            "calculate": "datum.dishes/datum.total*100", 
+            "as": "normalized_dishes"
+          }
+        ],
+        "layer":[
+          {
+            "mark": {
+              "type": "geoshape",
+              "stroke": "#483D3F",
+              "strokeWidth": 0.5
+            },
+            "encoding": {  
+              "tooltip": [
+                {"field": "dishes"},
+                {"field": "state"},
+                {"field":"total"},
+                {"field":"normalized_dishes"}
+              ],
+              "shape": {
+                "field": "geo",
+                "type": "geojson"
+              },
+              "color": {
+                "field": "normalized_dishes",
+                "legend":{
+                  "titleFontSize":13,
+                  "labelFontSize":12,
+                  "title":"Percentage of dishes(%)"
+                },
+                "type": "quantitative",
+                "scale": {
+                          "type": "log",
+                          "scheme":"reds"
+                }
+              } 
+            }
+          },
+          {
+            "transform": [
+              { "filter":"datum.state != 'Telangana' && datum.state != 'Punjab' && datum.state != 'Gujarat' && datum.state != 'Delhi' && datum.state != 'Nagaland'"}
+            ],
+            "mark": {"type": "text", "align": "left", "dx":-25, "color":"black"},
+            "encoding": {
+              "text": {
+                "field": "state", 
+                "type": "nominal"
+              },
+              "color": {"value":"black"},
+              "longitude": {"field": "long", "type": "quantitative"},
+              "latitude": {"field": "lat", "type": "quantitative"},
+              "size": {"value": 15},
+              "opacity": {"value": 0.6}
+          }
+          },
+          {
+            "transform": [
+              { "filter":"datum.state == 'Punjab' || datum.state == 'Gujarat' "}
+            ],
+            "mark": {"type": "text", "align": "left","dx":-20,"dy":-5},
+            "encoding": {
+              "text": {"field": "state", "type": "nominal"},
+              "longitude": {"field": "long", "type": "quantitative"},
+              "latitude": {"field": "lat", "type": "quantitative"},
+              "size": {"value": 15}
+          }
+        },
+           
+        {
+            "transform": [
+              { "filter":"datum.state == 'Punjab' || datum.state == 'Gujarat' "}
+            ],
+            "mark": {"type": "text", "align": "left","dx":-20,"dy":-5},
+            "encoding": {
+              "text": {"field": "state", "type": "nominal"},
+              "longitude": {"field": "long", "type": "quantitative"},
+              "latitude": {"field": "lat", "type": "quantitative"},
+              "size": {"value": 15}
+          }
+        },
+        
+        {
+          "transform": [
+            { "filter":"datum.state == 'Delhi' || datum.state == 'Nagaland'"}
+          ],
+          "mark": {"type": "text", "align": "left","dx":5},
+          "encoding": {
+            "text": {"field": "state", "type": "nominal"},
+            "longitude": {"field": "long", "type": "quantitative"},
+            "latitude": {"field": "lat", "type": "quantitative"},
+            "size": {"value": 12}
         }
       }
-    ],
-    "title": "Indian Food Flavor Distribution",
-    "projection": {"type": "equirectangular"},
-    "data": {
-         "url": "https://raw.githubusercontent.com/kychong990123/FIT3179-assignment2/main/indian_food.csv"
-  
-    },
-    "transform": [
-      {
-      "lookup": "state",
-          "from": {
-            "data": {
-              "url": "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/india/india-states.json",
-              "format": {"type": "topojson", "feature": "IND_adm1"}
-          },
-          "key": "properties.NAME_1"
-      },
-      "as": "geo"
-      },
-      {
-        "filter":"datum.flavor_profile == flavor"
-      },
-      {
-          "joinaggregate": [{
-          "op": "count",
-          "as": "dishes count"
-      }],
-      "groupby": [
-          "state"
         ]
-      }
-  
-    ],
-  
-    "mark": {
-      "type": "geoshape"
-      },
-    "encoding": {
-          "tooltip": [
-            {"field": "dishes count"},
-            {"field": "state"}
-          ],
-          "shape": {
-            "field": "geo",
-            "type": "geojson"
-          },
-          "color": {
-            "field": "dishes count",
-            "type": "quantitative"
-          }
-  
+    
     }
-          
+  ],
+  "config": {
+    "background": "#F8F6F0"
   }
-  
+    
+}

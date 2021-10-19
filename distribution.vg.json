@@ -1,55 +1,166 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Distribution of Time Used to Prepare and Cook Dishes in Regions in India",
- 
-  "hconcat":[
+  "title":{
+    "text":  "Distribution of Time Used to Prepare and Cook Dishes in Regions in India",
+    "fontSize":22,
+    "dy":-20,
+    "font":"Verdana"
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/kychong990123/FIT3179-assignment2/main/indian_food.csv"
+  },
+  "vconcat":[
     {
-      "width": 500,
-      "height": 200,
-      "data": {
-        "url": "https://raw.githubusercontent.com/kychong990123/FIT3179-assignment2/main/indian_food.csv"
+      "title":{
+        "text":  "Distribution of Time Used to Prepare Dishes in Each Region",
+        "fontSize":20,
+        "dy":-20
       },
-      "mark": "area",
+      "width": 960,
+      "height": 500,
       "transform": [
         {
-          "filter":"datum.region == 'East' || datum.region == 'West'|| datum.region == 'North'|| datum.region == 'South' || datum.region == 'North East'"
+          "filter":"datum.region == 'East' || datum.region == 'West'|| datum.region == 'North'|| datum.region == 'South' || datum.region == 'North East' || datum.region == 'Central'"
         },
-        {
+        { 
           "density": "prep_time",
           "groupby": ["region"],
           "extent": [0,600]
         }
       ],
-      "encoding": {
-        "x": {"field": "value", "type": "quantitative", "title": "Total Time used to prepare a meal"},
-        "y": {"field": "density", "type": "quantitative", "stack": "zero"},
-        "color": {"field": "region", "type": "nominal"}
-      }
-  },
-  {
-    "width": 500,
-    "height": 200,
-    "data": {
-        "url": "https://raw.githubusercontent.com/kychong990123/FIT3179-assignment2/main/indian_food.csv"
-      },
-      "mark": "area",
-      "transform": [
-        {
-          "filter":"datum.region == 'East' || datum.region == 'West'|| datum.region == 'North'|| datum.region == 'South' || datum.region == 'North East'"
-        },
-        {
-          "density": "cook_time",
-          "groupby": ["region"],
-          "extent": [0,200]
+      "layer":[
+        
+        { 
+          "params": [{
+            "name": "regions",
+            "select": {"type": "point", "fields": ["region"]},
+            "bind": "legend"
+          }],
+          "mark": "area",
+          "encoding": {
+            "x": {
+              "field": "value", 
+              "type": "quantitative", 
+              "title": "Total Time used to prepare a meal",
+              "axis": {
+                "title": "Preparing Time", 
+                "tickCount": 10, 
+                "grid": false,
+                "labelFontSize": 15,
+                "titleFontSize": 18,
+                "titlePadding": 20,
+                "titleFont":"monospace"    
+              }
+            },
+            "y": {
+              "field": "density", 
+              "type": "quantitative", 
+              "stack": "zero",
+              "axis": {
+                "title": "Density", 
+                "tickCount": 5, 
+                "labelFontSize": 15,
+                "titleFontSize": 18,
+                "titlePadding": 20,
+                "titleFont":"monospace"    
+              }
+            },
+            "color": {
+              "field": "region", 
+              "type": "nominal",
+              "legend":{ "labelFontSize":16, "titleFontSize":18}
+            
+            },
+            "opacity": {
+              "condition": {"param": "regions", "value": 1},
+              "value": 0.2
+            },
+            "tooltip":[
+              {"field":"region"},
+              {"field":"density"}
+            
+            ]
+          }
         }
-      ],
-      "encoding": {
-        "x": {"field": "value", "type": "quantitative", "title": "Total Time used to cook a meal"},
-        "y": {"field": "density", "type": "quantitative", "stack": "zero"},
-        "color": {"field": "region", "type": "nominal"}
-      }
+      ]
+      
+    },
+    {
+      "title":{
+        "text":  "Distribution of Time Used to Cook Dishes in Each Region",
+        "fontSize":20,
+        "dy":-20
+      },
+      "width": 960,
+      "height": 500,
+        "mark": "area",
+        "transform": [
+          {
+            "filter":"datum.region == 'East' || datum.region == 'West'|| datum.region == 'North'|| datum.region == 'South' || datum.region == 'North East' || datum.region == 'Central'"
+          },
+          {
+            "density": "cook_time",
+            "groupby": ["region"],
+            "extent": [0,200]
+          },
+          {
+            "joinaggregate": [
+              {
+                "op":"count",
+                "as":"count dishes"
+              }
+            ],"groupby": ["region","prep_time","cook_time"]
+          } 
+        ],
+        "encoding": {
+          "x": {
+            "field": "value", 
+            "type": "quantitative", 
+            "title": "Total Time used to cook a meal",
+            "axis": {
+              "title": "Cooking Time", 
+              "tickCount": 10, 
+              "grid": false,
+              "labelFontSize": 15,
+              "titleFontSize": 16,
+              "titlePadding": 20      
+            }
+          },
+          "y": {
+            "field": "density", 
+            "type": "quantitative", 
+            "stack": "zero",
+            "axis": {
+              "title": "Density", 
+              "tickCount": 5, 
+              "labelFontSize": 12,
+              "titleFontSize": 16,
+              "titlePadding": 20      
+            }
+
+          },
+          "color": {
+            "field": "region", 
+            "type": "nominal",
+            "scale": {"range": [ "#a05195","#665191","#ffa600","#ff7c43", "#f95d6a","#d45087"]}
+
+          },
+          "opacity": {
+            "condition": {"param": "regions", "value": 1},
+            "value": 0.2
+          },
+          "tooltip":[
+            {"field":"region"},
+            {"field":"density"}
+  
+          ]
+
+        }
   }
-]
+],
+"config": {
+  "background": "#F8F6F0"
+}
   
       
 

@@ -1,12 +1,19 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title":"Mean of Preparation and Cooking Time for each State",
-  "height":200,
-  "width":1000,
+  "title":{
+    "text":  "Mean of Preparation and Cooking Time for each State",
+    "fontSize":22,
+    "dy":-20,
+    "font":"Verdana",
+    "align": "center"
+
+  },
+  "height":550,
+  "width":970,
   "data": {"url": "https://raw.githubusercontent.com/kychong990123/FIT3179-assignment2/main/indian_food.csv"},
   "transform": [
     {
-      "filter":"datum.state != -1"
+      "filter":"datum.state != -1 && datum.region != '' && datum.prep_time != -1 && datum.cook_time != -1 "
     },
     {
       "joinaggregate": [
@@ -27,26 +34,174 @@
       ],
       "groupby": ["state"]
     }
-],
-  "mark": {
-  "type": "circle"
-},
-  "encoding": {
-    "x": {"field": "prep", "type": "quantitative", "title":"Preparation Time"},
-    "y": {"field": "cook", "type": "quantitative","title":"Cooking Time"},
-    "color": {"field": "state", "type": "nominal"},
-    "size": {
-      "field": "count",
-      "type": "quantitative",
-      "title": "Number of dishes in State",
-      "legend": {"clipHeight": 30},
-      "scale": {"rangeMax": 500}
-      
+  ],
+  "layer":[
+    {
+      "params": [{
+        "name": "states",
+        "select": {"type": "point", "fields": ["state"]},
+        "bind": "legend"
+      }],
+      "mark": {
+        "type": "circle",
+        "size":200
+      },
+      "encoding": {
+        "detail": {"type": "nominal", "field": "state"},
+        "x": {
+          "field": "prep", 
+          "type": "quantitative", 
+          "title":"Preparation Time",
+          "scale":{"domain": [0,100]}
+        },
+        "y": {"field": "cook", "type": "quantitative","title":"Cooking Time"},
+        "text": {"field": "state", "type": "nominal"},
+        "color": {
+          "field": "region", 
+          "type": "nominal",
+          "scale": {"range": [ "#a05195","#665191","#ffa600","#ff7c43", "#f95d6a","#d45087"]},
+          "legend":{ "labelFontSize":16, "titleFontSize":18}
+
+
+        }
+               
+        }
+      },
+    {
+      "transform": [{
+        
+        "filter":"datum.state != 'Jammu and Kashmir' && datum.state != 'Goa' && datum.state != 'Chhattisgarh'"
+        
+      }],
+      "mark": {
+          "type": "text", "dx":60
+      },
+      "encoding": {
+        "size":{"value":12},
+        "x": {
+          "field": "prep", 
+          "type": "quantitative", 
+          "title":"Preparation Time",
+          "axis": {
+            "title": "", 
+            "tickCount": 20, 
+            "labelFontSize": 15,
+            "titleFontSize": 18,
+            "titlePadding": 20
+          }
+
+        },
+        "y": {
+          "field": "cook", 
+          "type": "quantitative",
+          "title":"Cooking Time",
+          "axis": {
+            "title": "", 
+            "tickCount": 5, 
+            "labelFontSize": 15,
+            "titleFontSize": 18,
+            "titlePadding": 20
+          }
+
+          },
+        
+        "text": {"field": "state", "type": "nominal"}
+          
+        }
     },
-    "tooltip":[
-      {"field": "state", "type": "nominal"},
-      {"field": "prep", "type": "quantitative"},
-      {"field": "cook", "type": "quantitative"}
-      ] 
+    {
+      "transform": [{
+        
+        "filter":"datum.state == 'Jammu and Kashmir'"
+        
+      }],
+      "mark": {
+          "type": "text","dy":15,"dx":70
+      },
+      "encoding": {
+        "size":{"value":17},
+        "x": {
+          "field": "prep", 
+          "type": "quantitative", 
+          "title":"Preparation Time",
+          "axis": {"title": "", "tickCount": 20}
+
+        },
+        "y": {
+          "field": "cook", 
+          "type": "quantitative",
+          "title":"Cooking Time",
+          "axis": {"title": "", "tickCount": 5}
+
+          },
+          
+        "text": {"field": "state", "type": "nominal"}
+          
+        }
+    },
+    {
+      "transform": [{
+        
+        "filter":"datum.state == 'Goa'"
+        
+      }],
+      "mark": {
+          "type": "text","dy":-12,"dx":12
+      },
+      "encoding": {
+        "size":{"value":17},
+        "x": {
+          "field": "prep", 
+          "type": "quantitative", 
+          "title":"Preparation Time",
+          "axis": {"title": "", "tickCount": 20}
+
+        },
+        "y": {
+          "field": "cook", 
+          "type": "quantitative",
+          "title":"Cooking Time",
+          "axis": {"title": "", "tickCount": 5}
+
+          },
+     
+        "text": {"field": "state", "type": "nominal"}
+          
+        }
+    },
+    {
+      "transform": [{
+        
+        "filter":"datum.state == 'Chhattisgarh'"
+        
+      }],
+      "mark": {
+          "type": "text","dy":-20,"dx":12
+      },
+      "encoding": {
+        "size":{"value":17},
+        "x": {
+          "field": "prep", 
+          "type": "quantitative", 
+          "title":"Preparation Time",
+          "axis": {"title": "", "tickCount": 20}
+
+        },
+        "y": {
+          "field": "cook", 
+          "type": "quantitative",
+          "title":"Cooking Time",
+          "axis": {"title": "", "tickCount": 5}
+
+          },
+        
+        "text": {"field": "state", "type": "nominal"}
+          
+        }
+    }
+    
+  ],
+  "config": {
+    "background": "#F8F6F0"
   }
 }

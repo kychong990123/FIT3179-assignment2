@@ -1,0 +1,74 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title":{
+    "text":  "Number of Vegetarian and Non Vegetarian Diet Dishes in different Regions of India",
+    "fontSize":22,
+    "dy":-20,
+    "font":"Verdana",
+    "dx":70
+  },
+  "height":300,
+  "width":125,
+  "data": { "url": "https://raw.githubusercontent.com/kychong990123/FIT3179-assignment2/main/indian_food.csv"},
+  "transform": [
+    {
+      "filter":"datum.region == 'Central' || datum.region == 'North' || datum.region == 'South' || datum.region == 'East' || datum.region == 'West' || datum.region == 'North East'"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "count",
+          "as": "dishes"
+        }
+      ],
+      "groupby": ["region","diet"]
+    }
+
+  ],
+  "mark": "bar",
+  "encoding": {
+    "column": {
+      "field": "region", 
+      "type": "ordinal",
+      "header": {
+        "orient": "bottom", 
+        "labelFontSize":15, 
+        "titleFontSize":18,
+        "titleFont":"monospace"
+        }
+      },
+    "y": {
+      "aggregate": "count",
+      "title": "Dishes",
+      "axis": {
+        "labelFontSize": 15,
+        "titleFontSize": 20,
+        "titlePadding": 20,
+        "titleFont":"monospace"
+      
+      }
+    },
+    "x": {
+      "field": "region",
+      "axis": null
+    },
+    "color": {
+      "field": "diet",
+      "scale": {"range": ["#D90368","#04A777"]},
+      "legend":{ 
+        "labelFontSize":14, 
+        "titleFontSize":16
+      }
+    },
+    "size":{ "value": 50},
+    "tooltip":[
+      {"field":"region"},
+      {"field":"diet"},
+      {"field":"dishes"}
+    
+    ]
+  },
+  "config": {
+    "background": "#F8F6F0"
+  }
+}
